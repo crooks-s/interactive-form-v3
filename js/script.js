@@ -40,4 +40,25 @@ colorLabel.style.display = 'none';
 designMenu.addEventListener('change', (e) => {
     colorMenu.style.display = 'block';
     colorLabel.style.display = 'block';
+    const heartJS = colorMenu.querySelectorAll('[data-theme="heart js"]');
+    const jsPuns = colorMenu.querySelectorAll('[data-theme="js puns"]');
+
+    // DRY this
+    if (e.target.value === 'js puns'){
+        heartJS.forEach(element => {
+            element.style.display = 'none';
+        });
+        jsPuns.forEach(element => {
+            element.style.display = 'block';
+        });
+        
+    } else {
+        heartJS.forEach(element => {
+            element.style.display = 'block';
+        });
+        jsPuns.forEach(element => {
+            element.style.display = 'none';
+        });
+    }
 })
+
