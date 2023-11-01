@@ -2,7 +2,8 @@
     Instructions 2:
     -Focus on first text input field
 ***/
-
+const form = document.querySelector('form');
+const emailInput = document.querySelector('#email');
 const nameInput = document.querySelector('input[type=text]');
 nameInput.focus();
 
@@ -13,9 +14,9 @@ nameInput.focus();
     -addEventListener to "Job Role" <select> for 'change', on 'change' display/hide the text input
 ***/ 
 const otherJobInput = document.querySelector('#other-job-role');
+const jobSelect = document.querySelector("#title");
 otherJobInput.style.display = 'none';
 
-const jobSelect = document.querySelector("#title");
 jobSelect.addEventListener('change', (e) => {
     if (e.target.value === 'other'){
         otherJobInput.style.display = 'block';
@@ -38,13 +39,13 @@ colorMenu.style.display = 'none';
 colorLabel.style.display = 'none';
 
 designMenu.addEventListener('change', (e) => {
+    const heartJS = colorMenu.querySelectorAll('[data-theme="heart js"]');
+    const jsPuns = colorMenu.querySelectorAll('[data-theme="js puns"]');
+
     // reset colorMenu to default state when user changes design option
     colorMenu.querySelector('option').selected = true;
     colorMenu.style.display = 'block';
     colorLabel.style.display = 'block';
-    const heartJS = colorMenu.querySelectorAll('[data-theme="heart js"]');
-    const jsPuns = colorMenu.querySelectorAll('[data-theme="js puns"]');
-
 
     if (e.target.value === 'js puns'){
         updateColorOpts(heartJS, jsPuns)
@@ -91,7 +92,7 @@ activitiesField.addEventListener('change', (e) => {
        e.target.className = 'checked';
     } 
 
-    // update Total on page
+    // update Total shown on page
     let text = `Total: $${totalCost}`;
     document.querySelector('#activities-cost').textContent = text;
 })
@@ -114,20 +115,47 @@ payment.value = 'credit-card';
 paypalDiv.style.display = 'none';
 bitcoinDiv.style.display = 'none';
 
-// DRY THIS
 payment.addEventListener('change', () => {
+
     if (payment.value === 'credit-card'){
-        // show cc only, hide others
-        ccDiv.style.display = 'block';
-        paypalDiv.style.display = 'none';
-        bitcoinDiv.style.display = 'none';
+        updateDisplay(ccDiv, paypalDiv, bitcoinDiv);
     } else if (payment.value === 'paypal'){
-        ccDiv.style.display = 'none';
-        paypalDiv.style.display = 'block';
-        bitcoinDiv.style.display = 'none';
+        updateDisplay(paypalDiv, ccDiv, bitcoinDiv);
     } else if (payment.value === 'bitcoin'){
-        ccDiv.style.display = 'none';
-        paypalDiv.style.display = 'none';
-        bitcoinDiv.style.display = 'block';
+        updateDisplay(bitcoinDiv, paypalDiv, ccDiv);
     }
+
+    // show/hide relevant divs
+    function updateDisplay(showDiv, hide1, hide2){
+        showDiv.style.display = 'block';
+        hide1.style.display = 'none';
+        hide2.style.display = 'none';
+    };
 })
+
+
+/***
+    Instructions 7:
+    -addEventListener on form for 'submit' --> validate eaach required form field/section
+    -if invalid, form submission should be prevented (**use e.preventDefault()**)
+    @name cannot be blank or empty
+    @email address needs to be formatted using @ and '.'
+    @register for activities must have at least one activity selected
+    @IF AND ONLY IF cc method is selected
+        -cc must contain 13-16 digits without dashes or spaces
+        -zip code must be 5 digit number
+        -cvv must be 3 digit number
+***/
+
+const isValidName = () => /^[A-Za-z]+$/.test(nameInput.value);
+const isValidEmail = () => /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value);
+const registered = () => document.querySelectorAll('.checked').length >= 1;
+const ccMethodSelected = payment.value === 'credit-card';
+
+form.addEventListener('submit', () => {
+    // do something
+})
+
+if (ccMethodSelected) {
+    // do something
+}
