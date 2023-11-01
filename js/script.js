@@ -38,27 +38,28 @@ colorMenu.style.display = 'none';
 colorLabel.style.display = 'none';
 
 designMenu.addEventListener('change', (e) => {
+    // reset colorMenu to default state when user changes design option
+    colorMenu.querySelector('option').selected = true;
     colorMenu.style.display = 'block';
     colorLabel.style.display = 'block';
     const heartJS = colorMenu.querySelectorAll('[data-theme="heart js"]');
     const jsPuns = colorMenu.querySelectorAll('[data-theme="js puns"]');
 
-    // DRY this
+
     if (e.target.value === 'js puns'){
-        heartJS.forEach(element => {
-            element.style.display = 'none';
-        });
-        jsPuns.forEach(element => {
-            element.style.display = 'block';
-        });
+        updateColorOpts(heartJS, jsPuns)
         
     } else {
-        heartJS.forEach(element => {
-            element.style.display = 'block';
-        });
-        jsPuns.forEach(element => {
+        updateColorOpts(jsPuns, heartJS);
+    }
+
+    function updateColorOpts(styleOne, styleTwo) {
+        styleOne.forEach(element => {
             element.style.display = 'none';
         });
+        styleTwo.forEach(element => {
+            element.style.display = 'block';
+        });
     }
+    
 })
-
