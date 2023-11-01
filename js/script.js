@@ -3,7 +3,6 @@
     -Focus on first text input field
 ***/
 const form = document.querySelector('form');
-const emailInput = document.querySelector('#email');
 const nameInput = document.querySelector('input[type=text]');
 nameInput.focus();
 
@@ -149,39 +148,44 @@ payment.addEventListener('change', () => {
 
 form.addEventListener('submit', (e) => {
     const ccMethodSelected = payment.value === 'credit-card';
+    const emailInput = document.querySelector('#email');
     const ccInput = document.querySelector('#cc-num');
     const zipInput = document.querySelector('#zip');
-    const cvvInput = document.querySelector('#zip');
+    const cvvInput = document.querySelector('#cvv');
 
     const registered = () => document.querySelectorAll('.checked').length >= 1;
     const isValidName = () => /^(\s)*?[A-Za-z-]+(\s)*?[A-Za-z-]*(\s)*?$/.test(nameInput.value);
     const isValidEmail = () => /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value);
-    const isValidCC = () => /^\d{13,16}$/.test(ccInput);
-    const isValidZip = () => /^\d{5}$/.test(zipInput);
-    const isValidCVV = () => /^\d{3}$/.test(cvvInput);
+    const isValidCC = () => /^\d{13,16}$/.test(ccInput.value);
+    const isValidZip = () => /^\d{5}$/.test(zipInput.value);
+    const isValidCVV = () => /^\d{3}$/.test(cvvInput.value);
 
 
     if (!isValidName()) {
         e.preventDefault();
-        // console.log('whoa there'); alert user about format
+        console.log('whooa invalid name');
     }
     if (!isValidEmail()) {
         e.preventDefault();
-        // alert user
+        console.log('whooa invalid email');
     }
     if (!registered()) {
         e.preventDefault();
+        console.log('whoaa register');
         // alert user that at least one activity must be chosen
     }
     if (ccMethodSelected) {
-        if (!isValidCC()){
-            // console.log('whoa there'); alert user about format
+        if (!isValidCC()) {
+            e.preventDefault();
+            console.log('whoaa invalid ccnum');
         }
         if (!isValidZip()) {
-            // console.log('whoa there'); alert user about format
+            e.preventDefault();
+            console.log('whoaa invalid zip');
         }
         if (!isValidCVV()) {
-            // console.log('whoa there'); alert user about format
+            e.preventDefault();
+            console.log('whoaa invalid cvv');
         }
     }
 
