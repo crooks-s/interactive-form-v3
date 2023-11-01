@@ -61,5 +61,37 @@ designMenu.addEventListener('change', (e) => {
             element.style.display = 'block';
         });
     }
-    
+
+})
+
+/***
+    Instructions 5:
+    -Total <p> should update to reflect total cost of selected activities
+    -addEventListener to "Register for Activities" fieldset to listen for 'changes -->
+      *if activity 'checked' Total should increase by [data-cost] of the <input type='checkbox'>.
+      *if acvitity 'unchecked' Total should decrease by that amount
+    -(<p> of #activity-cost)THIS IS THE TOTAL should update to reflect adjustments made    
+***/
+
+const totalP = document.querySelector("#activities-cost");
+const activitiesField = document.querySelector('#activities');
+let totalCost = 0;
+
+activitiesField.addEventListener('change', (e) => {
+
+    // if previously 'checked', then subtract the activity cost from total
+    if (e.target.className === 'checked'){
+        totalCost -= parseInt(e.target.getAttribute('data-cost'));
+        e.target.className = '';
+    }
+
+    // if activity checked, then add activity cost to total and assign a 'checked' class
+    if (e.target.checked === true){
+       totalCost += parseInt(e.target.getAttribute('data-cost'));
+       e.target.className = 'checked';
+    } 
+
+    // update Total on page
+    let text = `Total: $${totalCost}`;
+    document.querySelector('#activities-cost').textContent = text;
 })
