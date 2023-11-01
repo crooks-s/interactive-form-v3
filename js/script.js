@@ -147,18 +147,42 @@ payment.addEventListener('change', () => {
         -cvv must be 3 digit number
 ***/
 
-const isValidName = () => /^(\s)*?[A-Za-z-]+(\s)*?[A-Za-z-]*(\s)*?$/.test(nameInput.value);
-const isValidEmail = () => /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value);
-const registered = () => document.querySelectorAll('.checked').length >= 1;
-const ccMethodSelected = payment.value === 'credit-card';
-
 form.addEventListener('submit', (e) => {
-    if ( !isValidName() ) {
+    const ccMethodSelected = payment.value === 'credit-card';
+    const ccInput = document.querySelector('#cc-num');
+    const zipInput = document.querySelector('#zip');
+    const cvvInput = document.querySelector('#zip');
+
+    const registered = () => document.querySelectorAll('.checked').length >= 1;
+    const isValidName = () => /^(\s)*?[A-Za-z-]+(\s)*?[A-Za-z-]*(\s)*?$/.test(nameInput.value);
+    const isValidEmail = () => /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value);
+    const isValidCC = () => /^\d{13,16}$/.test(ccInput);
+    const isValidZip = () => /^\d{5}$/.test(zipInput);
+    const isValidCVV = () => /^\d{3}$/.test(cvvInput);
+
+
+    if (!isValidName()) {
         e.preventDefault();
         // console.log('whoa there'); alert user about format
     }
-})
+    if (!isValidEmail()) {
+        e.preventDefault();
+        // alert user
+    }
+    if (!registered()) {
+        e.preventDefault();
+        // alert user that at least one activity must be chosen
+    }
+    if (ccMethodSelected) {
+        if (!isValidCC()){
+            // console.log('whoa there'); alert user about format
+        }
+        if (!isValidZip()) {
+            // console.log('whoa there'); alert user about format
+        }
+        if (!isValidCVV()) {
+            // console.log('whoa there'); alert user about format
+        }
+    }
 
-if (ccMethodSelected) {
-    // do something
-}
+})
