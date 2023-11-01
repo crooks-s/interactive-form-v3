@@ -95,3 +95,39 @@ activitiesField.addEventListener('change', (e) => {
     let text = `Total: $${totalCost}`;
     document.querySelector('#activities-cost').textContent = text;
 })
+
+
+/***
+    Instructions 6:
+    -CC should be default option selected
+    -CC payment section should be only section displayed
+    -when user selects different method from drop-down, form should update display to only that method
+***/
+
+const payment = document.querySelector('#payment');
+const ccDiv = document.querySelector('#credit-card');
+const paypalDiv = document.querySelector('#paypal');
+const bitcoinDiv = document.querySelector('#bitcoin');
+
+// set default payment to credit card, hide other payment info
+payment.value = 'credit-card';
+paypalDiv.style.display = 'none';
+bitcoinDiv.style.display = 'none';
+
+// DRY THIS
+payment.addEventListener('change', () => {
+    if (payment.value === 'credit-card'){
+        // show cc only, hide others
+        ccDiv.style.display = 'block';
+        paypalDiv.style.display = 'none';
+        bitcoinDiv.style.display = 'none';
+    } else if (payment.value === 'paypal'){
+        ccDiv.style.display = 'none';
+        paypalDiv.style.display = 'block';
+        bitcoinDiv.style.display = 'none';
+    } else if (payment.value === 'bitcoin'){
+        ccDiv.style.display = 'none';
+        paypalDiv.style.display = 'none';
+        bitcoinDiv.style.display = 'block';
+    }
+})
