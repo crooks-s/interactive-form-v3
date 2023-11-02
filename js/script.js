@@ -1,4 +1,4 @@
-    // General variables
+    // General DOM variables
 const form = document.querySelector('form');
 const otherJobInput = document.querySelector('#other-job-role');
 const jobSelect = document.querySelector("#title");
@@ -12,8 +12,7 @@ const ccDiv = document.querySelector('#credit-card');
 const paypalDiv = document.querySelector('#paypal');
 const bitcoinDiv = document.querySelector('#bitcoin');
 const allCheckboxes = document.querySelectorAll("input[type='checkbox']");
-    // Variables for form validation
-// const ccMethodSelected = payment.value === 'credit-card';
+    // DOM Variables for form validation
 const emailInput = document.querySelector('#email');
 const ccInput = document.querySelector('#cc-num');
 const zipInput = document.querySelector('#zip');
@@ -80,6 +79,7 @@ designMenu.addEventListener('change', (e) => {
     colorMenu.style.display = 'block';
     colorLabel.style.display = 'block';
 
+    // Update color options per selected design
     if (e.target.value === 'js puns'){
         updateColorOpts(heartJS, jsPuns)
         
@@ -160,7 +160,7 @@ payment.addEventListener('change', () => {
         updateDisplay(bitcoinDiv, paypalDiv, ccDiv);
     }
 
-    // Show/Hide relevant payments
+    // Show/Hide relevant payments info
     function updateDisplay(showDiv, hide1, hide2){
         showDiv.style.display = 'block';
         hide1.style.display = 'none';
