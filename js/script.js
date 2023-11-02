@@ -157,6 +157,9 @@ activitiesField.addEventListener('change', (e) => {
         }
     }
 
+    // Check validation on each checkbox change to show/hide hint
+    checkValidation(isRegistered(), activities, 'fieldset', 'activities');
+    
 })
 
 payment.addEventListener('change', () => {
