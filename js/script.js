@@ -33,8 +33,8 @@ const isValidCVV = () => /^\d{3}$/.test(cvvInput.value);
  * @param {DOM element} element - HTML element to modify
  * @param {string} ancestor - parent/ancestor to target
  */
-const checkValidation = (validation, element, ancestor) => {
-    if(!validation){
+const checkValidation = (valid, element, ancestor) => {
+    if(!valid){
         element.closest(ancestor).classList.add('not-valid');
         element.closest(ancestor).classList.remove('valid');
     } else {
