@@ -13,7 +13,7 @@ const paypalDiv = document.querySelector('#paypal');
 const bitcoinDiv = document.querySelector('#bitcoin');
 const allCheckboxes = document.querySelectorAll("input[type='checkbox']");
     // Variables for form validation
-const ccMethodSelected = payment.value === 'credit-card';
+// const ccMethodSelected = payment.value === 'credit-card';
 const emailInput = document.querySelector('#email');
 const ccInput = document.querySelector('#cc-num');
 const zipInput = document.querySelector('#zip');
@@ -172,13 +172,11 @@ payment.addEventListener('change', () => {
 
 // Form Validation on Submit
 form.addEventListener('submit', (e) => {
+    const ccMethodSelected = payment.value === 'credit-card';
 
-    // If any invalid values exist for required fields, then prevent page refresh on submit
+    // If any invalid values exist for required fields, then prevent submission
     if (!isValidName() ||
-        !isValidEmail()||
-        !isValidCC() ||
-        !isValidZip() ||
-        !isValidCVV() ||
+        !isValidEmail() ||
         !isRegistered()
     ){
         e.preventDefault();
@@ -195,6 +193,12 @@ form.addEventListener('submit', (e) => {
 
     // 'Credit Card' validation, IF credit card payment method is chosen
     if (ccMethodSelected) {
+        if (!isValidCC() ||
+            !isValidZip() ||
+            !isValidCVV() 
+        ){
+            e.preventDefault();
+        }
         // 'Credit Card number' validation
         checkValidation(isValidCC(), ccInput, 'label');
 
@@ -208,12 +212,22 @@ form.addEventListener('submit', (e) => {
 })
 
 // Real-time errors for user using 'keyup'
-form.addEventListener('keyup', () => {
+// Uses same functionality as 'submit' event above
+form.addEventListener('keyup', (e) => {
     const ccMethodSelected = payment.value === 'credit-card';
 
     checkValidation(isValidName(), nameInput, 'label');
     checkValidation(isValidEmail(), emailInput, 'label');
     if (ccMethodSelected) {
+
+        // If invalid credit card values, then prevent submission
+        if (!isValidCC() ||
+            !isValidZip() ||
+            !isValidCVV() 
+        ){
+            e.preventDefault();
+        }
+
         checkValidation(isValidCC(), ccInput, 'label');
         checkValidation(isValidZip(), zipInput, 'label');
         checkValidation(isValidCVV(), cvvInput, 'label');
