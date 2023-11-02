@@ -3,7 +3,6 @@ const form = document.querySelector('form');
 const otherJobInput = document.querySelector('#other-job-role');
 const jobSelect = document.querySelector("#title");
 const colorMenu = document.querySelector("#color");
-const colorLabel = colorMenu.parentElement;
 const designMenu = document.querySelector('#design');
 const totalP = document.querySelector("#activities-cost");
 const activitiesField = document.querySelector('#activities');
@@ -64,9 +63,8 @@ nameInput.focus();
 // Hide 'Other' job text input until needed
 otherJobInput.style.display = 'none';
 
-// Hide color menu until user chooses a design
-colorMenu.style.display = 'none';
-colorLabel.style.display = 'none';
+// Disable color menu until user chooses a design
+colorMenu.disabled = true;
 
 // Set default payment to credit card, hide other payment info
 payment.value = 'credit-card';
@@ -89,19 +87,18 @@ designMenu.addEventListener('change', (e) => {
 
     // Reset colorMenu to default state when user changes design option
     colorMenu.querySelector('option').selected = true;
-    colorMenu.style.display = 'block';
-    colorLabel.style.display = 'block';
+    colorMenu.disabled = true;
 
     // Update color options per selected design
     if (e.target.value === 'js puns'){
-        updateColorOpts(heartJS, jsPuns)
-        
+        updateColorOpts(heartJS, jsPuns)        
     } else {
         updateColorOpts(jsPuns, heartJS);
     }
 
-    // Takes design options to show/hide available colors
+    // Takes design options to show/hide available colors and enable color menu
     function updateColorOpts(design1, design2) {
+        colorMenu.disabled = false;
         design1.forEach(element => {
             element.style.display = 'none';
         });
