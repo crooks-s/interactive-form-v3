@@ -118,26 +118,13 @@ form.addEventListener('submit', (e) => {
     const cvvInput = document.querySelector('#cvv');
 
     // Validation functions
-    const registered = () => document.querySelectorAll('.checked').length >= 1;
+    const isRegistered = () => document.querySelectorAll('.checked').length >= 1;
     const isValidName = () => /^(\s)*?[A-Za-z-]+(\s)*?[A-Za-z-]*(\s)*?$/.test(nameInput.value);
     const isValidEmail = () => /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value);
     const isValidCC = () => /^\d{13,16}$/.test(ccInput.value);
     const isValidZip = () => /^\d{5}$/.test(zipInput.value);
     const isValidCVV = () => /^\d{3}$/.test(cvvInput.value);
 
-    // If element not valid, then add/remove relevant class
-    const notValid = (element) => {
-        element.closest('label').classList.add('not-valid');
-        element.closest('label').classList.remove('valid');
-    }
-
-    // If element is valid, then add/remove relevant class
-    const isValid = (element) => {
-        element.closest('label').classList.remove('not-valid');
-        element.closest('label').classList.add('valid');
-    }
-
-    // TESTING ----------
     const checkValidation = (validation, element) => {
         if(!validation){
             element.closest('label').classList.add('not-valid');
@@ -147,7 +134,6 @@ form.addEventListener('submit', (e) => {
             element.closest('label').classList.add('valid');
         }
     }
-    // TESTING -----------
 
     // If any invalid values exist for required fields, then prevent page refresh on submit
     if (!isValidName() ||
@@ -155,7 +141,7 @@ form.addEventListener('submit', (e) => {
         !isValidCC() ||
         !isValidZip() ||
         !isValidCVV() ||
-        !registered()
+        !isRegistered()
     ){
         e.preventDefault();
     }
@@ -168,7 +154,7 @@ form.addEventListener('submit', (e) => {
 
     // 'Register for Activities' validation, user needs to select at least ONE
     const activities = document.querySelector('#activities');
-    if (!registered()) {
+    if (!isRegistered()) {
         activities.classList.remove('valid');
         activities.classList.add('not-valid');
     } else {
@@ -179,25 +165,13 @@ form.addEventListener('submit', (e) => {
     // 'Credit Card' validation, IF credit card payment method is chosen
     if (ccMethodSelected) {
         // 'Credit Card number' validation
-        if (!isValidCC()) {
-            notValid(ccInput);
-        } else {
-            isValid(ccInput);
-        }
+        checkValidation(isValidCC(), ccInput);
 
         // 'Zip code' validation
-        if (!isValidZip()) {
-            notValid(zipInput);
-        } else {
-            isValid(zipInput);
-        }
-
+        checkValidation(isValidZip(), zipInput);
+        
         // 'CVV' validation
-        if (!isValidCVV()) {
-            notValid(cvvInput);
-        } else {
-            isValid(cvvInput);
-        }
+        checkValidation(isValidCVV(), cvvInput);
     }
 
 })
