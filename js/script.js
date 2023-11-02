@@ -33,13 +33,15 @@ const isValidCVV = () => /^\d{3}$/.test(cvvInput.value);
  * @param {DOM element} element - HTML element to modify
  * @param {string} ancestor - parent/ancestor to target
  */
-const checkValidation = (valid, element, ancestor) => {
+const checkValidation = (valid, element, ancestor, field) => {
     if(!valid){
         element.closest(ancestor).classList.add('not-valid');
         element.closest(ancestor).classList.remove('valid');
+        document.querySelector(`#${field}-hint`).style.display = 'inline';
     } else {
         element.closest(ancestor).classList.remove('not-valid');
         element.closest(ancestor).classList.add('valid');
+        document.querySelector(`#${field}-hint`).style.display = 'none';
     }
 }
 
@@ -183,10 +185,10 @@ form.addEventListener('submit', (e) => {
     }
 
     // 'Name' validation
-    checkValidation(isValidName(), nameInput, 'label');
+    checkValidation(isValidName(), nameInput, 'label', 'name');
 
     // 'Email' validation
-    checkValidation(isValidEmail(), emailInput, 'label');
+    checkValidation(isValidEmail(), emailInput, 'label', 'email');
 
     // 'Register for Activities' validation, user needs to select at least ONE
     checkValidation(isRegistered(), activities, 'fieldset');
@@ -200,13 +202,13 @@ form.addEventListener('submit', (e) => {
             e.preventDefault();
         }
         // 'Credit Card number' validation
-        checkValidation(isValidCC(), ccInput, 'label');
+        checkValidation(isValidCC(), ccInput, 'label', 'cc');
 
         // 'Zip code' validation
-        checkValidation(isValidZip(), zipInput, 'label');
+        checkValidation(isValidZip(), zipInput, 'label', 'zip');
         
         // 'CVV' validation
-        checkValidation(isValidCVV(), cvvInput, 'label');
+        checkValidation(isValidCVV(), cvvInput, 'label', 'cvv');
     }
 
 })
@@ -216,8 +218,8 @@ form.addEventListener('submit', (e) => {
 form.addEventListener('keyup', (e) => {
     const ccMethodSelected = payment.value === 'credit-card';
 
-    checkValidation(isValidName(), nameInput, 'label');
-    checkValidation(isValidEmail(), emailInput, 'label');
+    checkValidation(isValidName(), nameInput, 'label', 'name');
+    checkValidation(isValidEmail(), emailInput, 'label', 'email');
     if (ccMethodSelected) {
 
         // If invalid credit card values, then prevent submission
@@ -228,9 +230,9 @@ form.addEventListener('keyup', (e) => {
             e.preventDefault();
         }
 
-        checkValidation(isValidCC(), ccInput, 'label');
-        checkValidation(isValidZip(), zipInput, 'label');
-        checkValidation(isValidCVV(), cvvInput, 'label');
+        checkValidation(isValidCC(), ccInput, 'label', 'cc');
+        checkValidation(isValidZip(), zipInput, 'label', 'zip');
+        checkValidation(isValidCVV(), cvvInput, 'label', 'cvv');
     }
 })
 
