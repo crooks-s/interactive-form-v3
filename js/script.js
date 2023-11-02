@@ -1,3 +1,4 @@
+    // General variables
 const form = document.querySelector('form');
 const otherJobInput = document.querySelector('#other-job-role');
 const jobSelect = document.querySelector("#title");
@@ -11,6 +12,37 @@ const ccDiv = document.querySelector('#credit-card');
 const paypalDiv = document.querySelector('#paypal');
 const bitcoinDiv = document.querySelector('#bitcoin');
 const allCheckboxes = document.querySelectorAll("input[type='checkbox']");
+    // Variables for form validation
+const ccMethodSelected = payment.value === 'credit-card';
+const emailInput = document.querySelector('#email');
+const ccInput = document.querySelector('#cc-num');
+const zipInput = document.querySelector('#zip');
+const cvvInput = document.querySelector('#cvv');
+const activities = document.querySelector('#activities');
+
+// Validation functions - returns boolean
+const isRegistered = () => document.querySelectorAll('.checked').length >= 1;
+const isValidName = () => /^(\s)*?[A-Za-z-]+(\s)*?[A-Za-z-]*(\s)*?$/.test(nameInput.value);
+const isValidEmail = () => /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value);
+const isValidCC = () => /^\d{13,16}$/.test(ccInput.value);
+const isValidZip = () => /^\d{5}$/.test(zipInput.value);
+const isValidCVV = () => /^\d{3}$/.test(cvvInput.value);
+
+/**
+ * Uses validation functions above to modify selected HTML element
+ * @param {function} validation - validation function
+ * @param {DOM element} element - HTML element to modify
+ * @param {string} ancestor - parent/ancestor to target
+ */
+const checkValidation = (validation, element, ancestor) => {
+    if(!validation){
+        element.closest(ancestor).classList.add('not-valid');
+        element.closest(ancestor).classList.remove('valid');
+    } else {
+        element.closest(ancestor).classList.remove('not-valid');
+        element.closest(ancestor).classList.add('valid');
+    }
+}
 
 
 // On page load, focus on first input field
@@ -140,37 +172,6 @@ payment.addEventListener('change', () => {
 
 // Form Validation on Submit
 form.addEventListener('submit', (e) => {
-    // Variables declared/initialized
-    const ccMethodSelected = payment.value === 'credit-card';
-    const emailInput = document.querySelector('#email');
-    const ccInput = document.querySelector('#cc-num');
-    const zipInput = document.querySelector('#zip');
-    const cvvInput = document.querySelector('#cvv');
-    const activities = document.querySelector('#activities');
-
-    // Validation functions - returns boolean
-    const isRegistered = () => document.querySelectorAll('.checked').length >= 1;
-    const isValidName = () => /^(\s)*?[A-Za-z-]+(\s)*?[A-Za-z-]*(\s)*?$/.test(nameInput.value);
-    const isValidEmail = () => /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value);
-    const isValidCC = () => /^\d{13,16}$/.test(ccInput.value);
-    const isValidZip = () => /^\d{5}$/.test(zipInput.value);
-    const isValidCVV = () => /^\d{3}$/.test(cvvInput.value);
-
-    /**
-     * Uses validation functions above to modify selected HTML element
-     * @param {function} validation - validation function
-     * @param {DOM element} element - HTML element to modify
-     * @param {string} ancestor - parent/ancestor to target
-     */
-    const checkValidation = (validation, element, ancestor) => {
-        if(!validation){
-            element.closest(ancestor).classList.add('not-valid');
-            element.closest(ancestor).classList.remove('valid');
-        } else {
-            element.closest(ancestor).classList.remove('not-valid');
-            element.closest(ancestor).classList.add('valid');
-        }
-    }
 
     // If any invalid values exist for required fields, then prevent page refresh on submit
     if (!isValidName() ||
@@ -206,48 +207,18 @@ form.addEventListener('submit', (e) => {
 
 })
 
-// TESTING ---------------
+// Real-time errors for user using 'keyup'
 form.addEventListener('keyup', () => {
-    const isValidName = () => /^(\s)*?[A-Za-z-]+(\s)*?[A-Za-z-]*(\s)*?$/.test(nameInput.value);
-
-    const emailInput = document.querySelector('#email');
-    const isValidEmail = () => /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value);
-
-    const ccInput = document.querySelector('#cc-num');
-    const zipInput = document.querySelector('#zip');
-    const cvvInput = document.querySelector('#cvv');
-    const isValidCC = () => /^\d{13,16}$/.test(ccInput.value);
-    const isValidZip = () => /^\d{5}$/.test(zipInput.value);
-    const isValidCVV = () => /^\d{3}$/.test(cvvInput.value);
     const ccMethodSelected = payment.value === 'credit-card';
 
-
-
-    const checkValidation = (validation, element, ancestor) => {
-        if(!validation){
-            element.closest(ancestor).classList.add('not-valid');
-            element.closest(ancestor).classList.remove('valid');
-        } else {
-            element.closest(ancestor).classList.remove('not-valid');
-            element.closest(ancestor).classList.add('valid');
-        }
-    }
-
-    // works --
     checkValidation(isValidName(), nameInput, 'label');
-
-    // works --
     checkValidation(isValidEmail(), emailInput, 'label');
-    
-    // works --
     if (ccMethodSelected) {
         checkValidation(isValidCC(), ccInput, 'label');
         checkValidation(isValidZip(), zipInput, 'label');
         checkValidation(isValidCVV(), cvvInput, 'label');
     }
-    
 })
-// TESTING -----------------
 
 // Accessibility: add focus states to checkboxes for tab targeting 
 for (let i=0; i<allCheckboxes.length; i++) {
