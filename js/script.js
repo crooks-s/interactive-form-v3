@@ -71,8 +71,23 @@ designMenu.addEventListener('change', (e) => {
 let totalCost = 0;
 activitiesField.addEventListener('change', (e) => {
 
-    // If previously 'checked', then subtract the activity cost from total
+    // If previously 'checked', then ...
     if (e.target.className === 'checked'){
+
+        // ... reverse changes on checkboxes to allow re-selection
+        for (let i=0; i<allCheckboxes.length; i++) {
+            const selectedBox = document.querySelectorAll('.checked');
+            for (let j=0; j<selectedBox.length; j++) {
+                if (allCheckboxes[i].getAttribute('data-day-and-time') === 
+                    selectedBox[j].getAttribute('data-day-and-time') &&
+                    allCheckboxes[i] !== selectedBox[j]
+                ){
+                    allCheckboxes[i].disabled = false;
+                } 
+            }
+        }
+
+        // ... subtract activity cost from total
         totalCost -= parseInt(e.target.getAttribute('data-cost'));
         e.target.className = '';
     }
@@ -86,10 +101,25 @@ activitiesField.addEventListener('change', (e) => {
     // Update Total shown on page
     let text = `Total: $${totalCost}`;
     document.querySelector('#activities-cost').textContent = text;
+
+    // Disable checkboxes with conflicting day/time of selected checkbox
+    for (let i=0; i<allCheckboxes.length; i++) {
+        const selectedBox = document.querySelectorAll('.checked');
+        for (let j=0; j<selectedBox.length; j++) {
+            if (allCheckboxes[i].getAttribute('data-day-and-time') === 
+                selectedBox[j].getAttribute('data-day-and-time') &&
+                allCheckboxes[i] !== selectedBox[j]
+            ){
+                allCheckboxes[i].disabled = true;
+            } 
+        }
+    }
+
 })
 
 payment.addEventListener('change', () => {
 
+    // Update relevant info for selected payment method
     if (payment.value === 'credit-card'){
         updateDisplay(ccDiv, paypalDiv, bitcoinDiv);
     } else if (payment.value === 'paypal'){
