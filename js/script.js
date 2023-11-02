@@ -172,38 +172,62 @@ form.addEventListener('submit', (e) => {
     const isValidZip = () => /^\d{5}$/.test(zipInput.value);
     const isValidCVV = () => /^\d{3}$/.test(cvvInput.value);
 
+    if (!isValidName() ||
+        !isValidEmail()||
+        !isValidCC() ||
+        !isValidZip() ||
+        !isValidCVV() ||
+        !registered
+    ){
+        e.preventDefault();
+    }
 
     if (!isValidName()) {
-        e.preventDefault();
-        console.log('whooa invalid name');
         nameInput.closest('label').classList.add('not-valid');
+        nameInput.closest('label').classList.remove('valid');
+
+    } else {
+        nameInput.closest('label').classList.remove('not-valid');
+        nameInput.closest('label').classList.add('valid');
     }
+
     if (!isValidEmail()) {
-        e.preventDefault();
-        console.log('whooa invalid email');
+        emailInput.closest('label').classList.remove('valid');
         emailInput.closest('label').classList.add('not-valid');
+    } else {
+        emailInput.closest('label').classList.remove('not-valid');
+        emailInput.closest('label').classList.add('valid');
     }
+
     if (!registered()) {
-        e.preventDefault();
-        console.log('whoaa register');
+        document.querySelector('#activities').classList.remove('valid');
         document.querySelector('#activities').classList.add('not-valid');
+    } else {
+        document.querySelector('#activities').classList.remove('not-valid');
+        document.querySelector('#activities').classList.add('valid');
     }
 
     if (ccMethodSelected) {
         if (!isValidCC()) {
-            e.preventDefault();
+            ccInput.closest('label').classList.remove('valid');
             ccInput.closest('label').classList.add('not-valid');
-            console.log('whoaa invalid ccnum');
+        } else {
+            ccInput.closest('label').classList.remove('not-valid');
+            ccInput.closest('label').classList.add('valid');
         }
         if (!isValidZip()) {
-            e.preventDefault();
+            zipInput.closest('label').classList.remove('valid');
             zipInput.closest('label').classList.add('not-valid');
-            console.log('whoaa invalid zip');
+        } else {
+            zipInput.closest('label').classList.remove('not-valid');
+            zipInput.closest('label').classList.add('valid');
         }
         if (!isValidCVV()) {
-            e.preventDefault();
+            cvvInput.closest('label').classList.remove('valid');
             cvvInput.closest('label').classList.add('not-valid');
-            console.log('whoaa invalid cvv');
+        } else {
+            cvvInput.closest('label').classList.remove('valid');
+            cvvInput.closest('label').classList.add('valid');
         }
     }
 
