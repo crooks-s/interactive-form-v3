@@ -206,6 +206,49 @@ form.addEventListener('submit', (e) => {
 
 })
 
+// TESTING ---------------
+form.addEventListener('keyup', () => {
+    const isValidName = () => /^(\s)*?[A-Za-z-]+(\s)*?[A-Za-z-]*(\s)*?$/.test(nameInput.value);
+
+    const emailInput = document.querySelector('#email');
+    const isValidEmail = () => /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value);
+
+    const ccInput = document.querySelector('#cc-num');
+    const zipInput = document.querySelector('#zip');
+    const cvvInput = document.querySelector('#cvv');
+    const isValidCC = () => /^\d{13,16}$/.test(ccInput.value);
+    const isValidZip = () => /^\d{5}$/.test(zipInput.value);
+    const isValidCVV = () => /^\d{3}$/.test(cvvInput.value);
+    const ccMethodSelected = payment.value === 'credit-card';
+
+
+
+    const checkValidation = (validation, element, ancestor) => {
+        if(!validation){
+            element.closest(ancestor).classList.add('not-valid');
+            element.closest(ancestor).classList.remove('valid');
+        } else {
+            element.closest(ancestor).classList.remove('not-valid');
+            element.closest(ancestor).classList.add('valid');
+        }
+    }
+
+    // works --
+    checkValidation(isValidName(), nameInput, 'label');
+
+    // works --
+    checkValidation(isValidEmail(), emailInput, 'label');
+    
+    // works --
+    if (ccMethodSelected) {
+        checkValidation(isValidCC(), ccInput, 'label');
+        checkValidation(isValidZip(), zipInput, 'label');
+        checkValidation(isValidCVV(), cvvInput, 'label');
+    }
+    
+})
+// TESTING -----------------
+
 // Accessibility: add focus states to checkboxes for tab targeting 
 for (let i=0; i<allCheckboxes.length; i++) {
     allCheckboxes[i].addEventListener('focus', (e) => {
