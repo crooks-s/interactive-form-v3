@@ -125,78 +125,84 @@ form.addEventListener('submit', (e) => {
     const isValidZip = () => /^\d{5}$/.test(zipInput.value);
     const isValidCVV = () => /^\d{3}$/.test(cvvInput.value);
 
+    // If element not valid, then add/remove relevant class
+    const notValid = (element) => {
+        element.closest('label').classList.add('not-valid');
+        element.closest('label').classList.remove('valid');
+    }
+
+    // If element is valid, then add/remove relevant class
+    const isValid = (element) => {
+        element.closest('label').classList.remove('not-valid');
+        element.closest('label').classList.add('valid');
+    }
+
+    // TESTING ----------
+    const checkValidation = (validation, element) => {
+        if(!validation){
+            element.closest('label').classList.add('not-valid');
+            element.closest('label').classList.remove('valid');
+        } else {
+            element.closest('label').classList.remove('not-valid');
+            element.closest('label').classList.add('valid');
+        }
+    }
+    // TESTING -----------
+
     // If any invalid values exist for required fields, then prevent page refresh on submit
     if (!isValidName() ||
         !isValidEmail()||
         !isValidCC() ||
         !isValidZip() ||
         !isValidCVV() ||
-        !registered
+        !registered()
     ){
         e.preventDefault();
     }
 
     // 'Name' validation
-    if (!isValidName()) {
-        nameInput.closest('label').classList.add('not-valid');
-        nameInput.closest('label').classList.remove('valid');
-
-    } else {
-        nameInput.closest('label').classList.remove('not-valid');
-        nameInput.closest('label').classList.add('valid');
-    }
+    checkValidation(isValidName(), nameInput);
 
     // 'Email' validation
-    if (!isValidEmail()) {
-        emailInput.closest('label').classList.remove('valid');
-        emailInput.closest('label').classList.add('not-valid');
-    } else {
-        emailInput.closest('label').classList.remove('not-valid');
-        emailInput.closest('label').classList.add('valid');
-    }
+    checkValidation(isValidEmail(), emailInput);
 
     // 'Register for Activities' validation, user needs to select at least ONE
+    const activities = document.querySelector('#activities');
     if (!registered()) {
-        document.querySelector('#activities').classList.remove('valid');
-        document.querySelector('#activities').classList.add('not-valid');
+        activities.classList.remove('valid');
+        activities.classList.add('not-valid');
     } else {
-        document.querySelector('#activities').classList.remove('not-valid');
-        document.querySelector('#activities').classList.add('valid');
+        activities.classList.remove('not-valid');
+        activities.classList.add('valid');
     }
 
     // 'Credit Card' validation, IF credit card payment method is chosen
     if (ccMethodSelected) {
         // 'Credit Card number' validation
         if (!isValidCC()) {
-            ccInput.closest('label').classList.remove('valid');
-            ccInput.closest('label').classList.add('not-valid');
+            notValid(ccInput);
         } else {
-            ccInput.closest('label').classList.remove('not-valid');
-            ccInput.closest('label').classList.add('valid');
+            isValid(ccInput);
         }
 
         // 'Zip code' validation
         if (!isValidZip()) {
-            zipInput.closest('label').classList.remove('valid');
-            zipInput.closest('label').classList.add('not-valid');
+            notValid(zipInput);
         } else {
-            zipInput.closest('label').classList.remove('not-valid');
-            zipInput.closest('label').classList.add('valid');
+            isValid(zipInput);
         }
 
         // 'CVV' validation
         if (!isValidCVV()) {
-            cvvInput.closest('label').classList.remove('valid');
-            cvvInput.closest('label').classList.add('not-valid');
+            notValid(cvvInput);
         } else {
-            cvvInput.closest('label').classList.remove('valid');
-            cvvInput.closest('label').classList.add('valid');
+            isValid(cvvInput);
         }
     }
 
 })
 
-// Accessibility: add focus states to checkboxes
+// Accessibility: add focus states to checkboxes for tab targeting 
 for (let i=0; i<allCheckboxes.length; i++) {
     allCheckboxes[i].addEventListener('focus', (e) => {
         e.target.closest('label').className = 'focus';
