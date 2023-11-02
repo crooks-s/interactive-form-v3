@@ -116,8 +116,9 @@ form.addEventListener('submit', (e) => {
     const ccInput = document.querySelector('#cc-num');
     const zipInput = document.querySelector('#zip');
     const cvvInput = document.querySelector('#cvv');
+    const activities = document.querySelector('#activities');
 
-    // Validation functions
+    // Validation functions - returns boolean
     const isRegistered = () => document.querySelectorAll('.checked').length >= 1;
     const isValidName = () => /^(\s)*?[A-Za-z-]+(\s)*?[A-Za-z-]*(\s)*?$/.test(nameInput.value);
     const isValidEmail = () => /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value);
@@ -125,13 +126,19 @@ form.addEventListener('submit', (e) => {
     const isValidZip = () => /^\d{5}$/.test(zipInput.value);
     const isValidCVV = () => /^\d{3}$/.test(cvvInput.value);
 
-    const checkValidation = (validation, element) => {
+    /**
+     * Uses validation functions above to modify selected HTML element
+     * @param {function} validation - validation function
+     * @param {DOM element} element - HTML element to modify
+     * @param {string} ancestor - parent/ancestor to target
+     */
+    const checkValidation = (validation, element, ancestor) => {
         if(!validation){
-            element.closest('label').classList.add('not-valid');
-            element.closest('label').classList.remove('valid');
+            element.closest(ancestor).classList.add('not-valid');
+            element.closest(ancestor).classList.remove('valid');
         } else {
-            element.closest('label').classList.remove('not-valid');
-            element.closest('label').classList.add('valid');
+            element.closest(ancestor).classList.remove('not-valid');
+            element.closest(ancestor).classList.add('valid');
         }
     }
 
@@ -147,31 +154,24 @@ form.addEventListener('submit', (e) => {
     }
 
     // 'Name' validation
-    checkValidation(isValidName(), nameInput);
+    checkValidation(isValidName(), nameInput, 'label');
 
     // 'Email' validation
-    checkValidation(isValidEmail(), emailInput);
+    checkValidation(isValidEmail(), emailInput, 'label');
 
     // 'Register for Activities' validation, user needs to select at least ONE
-    const activities = document.querySelector('#activities');
-    if (!isRegistered()) {
-        activities.classList.remove('valid');
-        activities.classList.add('not-valid');
-    } else {
-        activities.classList.remove('not-valid');
-        activities.classList.add('valid');
-    }
+    checkValidation(isRegistered(), activities, 'fieldset');
 
     // 'Credit Card' validation, IF credit card payment method is chosen
     if (ccMethodSelected) {
         // 'Credit Card number' validation
-        checkValidation(isValidCC(), ccInput);
+        checkValidation(isValidCC(), ccInput, 'label');
 
         // 'Zip code' validation
-        checkValidation(isValidZip(), zipInput);
+        checkValidation(isValidZip(), zipInput, 'label');
         
         // 'CVV' validation
-        checkValidation(isValidCVV(), cvvInput);
+        checkValidation(isValidCVV(), cvvInput, 'label');
     }
 
 })
