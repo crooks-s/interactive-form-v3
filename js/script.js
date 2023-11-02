@@ -53,11 +53,11 @@ designMenu.addEventListener('change', (e) => {
         updateColorOpts(jsPuns, heartJS);
     }
 
-    function updateColorOpts(styleOne, styleTwo) {
-        styleOne.forEach(element => {
+    function updateColorOpts(design1, design2) {
+        design1.forEach(element => {
             element.style.display = 'none';
         });
-        styleTwo.forEach(element => {
+        design2.forEach(element => {
             element.style.display = 'block';
         });
     }
@@ -145,6 +145,18 @@ payment.addEventListener('change', () => {
         -zip code must be 5 digit number
         -cvv must be 3 digit number
 ***/
+/***
+    Instructions 9: --ON SUBMIT--
+    if invalid:
+        - add .not-valid to parent element of form field
+            -activity section: parent element is fieldset, all else label element
+        -remove .valid from parent element
+        -display .hint associated with element
+    if valid:
+        -add .valid to parent element
+        -remove .not-valid
+        -hide .hint
+***/
 
 form.addEventListener('submit', (e) => {
     const ccMethodSelected = payment.value === 'credit-card';
@@ -164,29 +176,55 @@ form.addEventListener('submit', (e) => {
     if (!isValidName()) {
         e.preventDefault();
         console.log('whooa invalid name');
+        nameInput.closest('label').classList.add('not-valid');
     }
     if (!isValidEmail()) {
         e.preventDefault();
         console.log('whooa invalid email');
+        emailInput.closest('label').classList.add('not-valid');
     }
     if (!registered()) {
         e.preventDefault();
         console.log('whoaa register');
-        // alert user that at least one activity must be chosen
+        document.querySelector('#activities').classList.add('not-valid');
     }
+
     if (ccMethodSelected) {
         if (!isValidCC()) {
             e.preventDefault();
+            ccInput.closest('label').classList.add('not-valid');
             console.log('whoaa invalid ccnum');
         }
         if (!isValidZip()) {
             e.preventDefault();
+            zipInput.closest('label').classList.add('not-valid');
             console.log('whoaa invalid zip');
         }
         if (!isValidCVV()) {
             e.preventDefault();
+            cvvInput.closest('label').classList.add('not-valid');
             console.log('whoaa invalid cvv');
         }
     }
 
 })
+
+
+/***
+    Instructions 8:
+    -addEventListener for 'checkbox' inputs for focus and blur events
+    -on focus --> add focus class to input's parent label element
+    -on blur --> remove focus class from parent lavel
+***/
+
+const allCheckboxes = document.querySelectorAll("input[type='checkbox']");
+
+for (let i=0; i<allCheckboxes.length; i++) {
+    allCheckboxes[i].addEventListener('focus', (e) => {
+        e.target.closest('label').className = 'focus';
+    })
+
+    allCheckboxes[i].addEventListener('blur', (e) => {
+        document.querySelector('.focus').className = '';
+    })
+}
