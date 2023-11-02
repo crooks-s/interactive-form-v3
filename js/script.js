@@ -32,12 +32,20 @@ const isValidCVV = () => /^\d{3}$/.test(cvvInput.value);
  * @param {function} validation - validation function
  * @param {DOM element} element - HTML element to modify
  * @param {string} ancestor - parent/ancestor to target
+ * @param {string} field - hint element to be shown/hidden
  */
 const checkValidation = (valid, element, ancestor, field) => {
     if(!valid){
         element.closest(ancestor).classList.add('not-valid');
         element.closest(ancestor).classList.remove('valid');
-        document.querySelector(`#${field}-hint`).style.display = 'inline';
+
+        // If hint HTML is span, style inline; else style block due to hint in checkbox fieldset being a paragraph element
+        if (document.querySelector(`#${field}-hint`).tagName === 'SPAN'){
+            document.querySelector(`#${field}-hint`).style.display = 'inline';
+        } else {
+            document.querySelector(`#${field}-hint`).style.display = 'block';
+        }
+
     } else {
         element.closest(ancestor).classList.remove('not-valid');
         element.closest(ancestor).classList.add('valid');
@@ -191,7 +199,7 @@ form.addEventListener('submit', (e) => {
     checkValidation(isValidEmail(), emailInput, 'label', 'email');
 
     // 'Register for Activities' validation, user needs to select at least ONE
-    checkValidation(isRegistered(), activities, 'fieldset');
+    checkValidation(isRegistered(), activities, 'fieldset', 'activities');
 
     // 'Credit Card' validation, IF credit card payment method is chosen
     if (ccMethodSelected) {
