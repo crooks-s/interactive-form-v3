@@ -10,4 +10,4 @@ In this application, the functionality of 'real-time error messages' essentially
 
 
 Author: Sean Crooks
-Contributions: Team Treehouse supplied all files except script.js. Script.js was created and written solely by author. 
+<br>Contributions: Team Treehouse supplied all files except script.js. Script.js was created and written solely by author. 
