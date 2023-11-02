@@ -19,13 +19,14 @@ const zipInput = document.querySelector('#zip');
 const cvvInput = document.querySelector('#cvv');
 const activities = document.querySelector('#activities');
 
-// Validation functions - returns boolean
+    // Validation functions - returns boolean
 const isRegistered = () => document.querySelectorAll('.checked').length >= 1;
 const isValidName = () => /^(\s)*?[A-Za-z-]+(\s)*?[A-Za-z-]*(\s)*?$/.test(nameInput.value);
 const isValidEmail = () => /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value);
 const isValidCC = () => /^\d{13,16}$/.test(ccInput.value);
 const isValidZip = () => /^\d{5}$/.test(zipInput.value);
 const isValidCVV = () => /^\d{3}$/.test(cvvInput.value);
+
 
 /**
  * Uses validation functions above to modify selected HTML element
@@ -34,12 +35,14 @@ const isValidCVV = () => /^\d{3}$/.test(cvvInput.value);
  * @param {string} ancestor - parent/ancestor to target
  * @param {string} field - hint element to be shown/hidden
  */
+
 const checkValidation = (valid, element, ancestor, field) => {
     if(!valid){
         element.closest(ancestor).classList.add('not-valid');
         element.closest(ancestor).classList.remove('valid');
 
-        // If hint HTML is span, style inline; else style block due to hint in checkbox fieldset being a paragraph element
+        // If hint element is span, style 'inline'; 
+        // else style 'block' due to hint in checkbox fieldset being a paragraph element
         if (document.querySelector(`#${field}-hint`).tagName === 'SPAN'){
             document.querySelector(`#${field}-hint`).style.display = 'inline';
         } else {
@@ -109,7 +112,9 @@ designMenu.addEventListener('change', (e) => {
 
 })
 
+// Handles changes needed upon checkbox selections
 // Updates Total shown on page as user selects different activities
+// Other functionality explained below
 let totalCost = 0;
 activitiesField.addEventListener('change', (e) => {
 
@@ -140,7 +145,7 @@ activitiesField.addEventListener('change', (e) => {
        e.target.className = 'checked';
     } 
 
-    // Update Total shown on page
+    // Update Total $ amount shown on page
     let text = `Total: $${totalCost}`;
     document.querySelector('#activities-cost').textContent = text;
 
@@ -157,11 +162,12 @@ activitiesField.addEventListener('change', (e) => {
         }
     }
 
-    // Check validation on each checkbox change to show/hide hint
+    // Check validation on each checkbox change to show/hide hint if user has not selected at least one activity
     checkValidation(isRegistered(), activities, 'fieldset', 'activities');
-    
+
 })
 
+// Handles payment info when user 'changes' payment method
 payment.addEventListener('change', () => {
 
     // Update relevant info for selected payment method
@@ -187,7 +193,7 @@ payment.addEventListener('change', () => {
 form.addEventListener('submit', (e) => {
     const ccMethodSelected = payment.value === 'credit-card';
 
-    // If any invalid values exist for required fields, then prevent submission
+    // If any invalid values exist for required fields, then prevent form submission
     if (!isValidName() ||
         !isValidEmail() ||
         !isRegistered()
@@ -206,12 +212,15 @@ form.addEventListener('submit', (e) => {
 
     // 'Credit Card' validation, IF credit card payment method is chosen
     if (ccMethodSelected) {
+
+        // If invalid credit card values, then prevent form submission
         if (!isValidCC() ||
             !isValidZip() ||
             !isValidCVV() 
         ){
             e.preventDefault();
         }
+
         // 'Credit Card number' validation
         checkValidation(isValidCC(), ccInput, 'label', 'cc');
 
@@ -224,7 +233,7 @@ form.addEventListener('submit', (e) => {
 
 })
 
-// Real-time errors for user using 'keyup'
+// Form Validation, real-time errors for user upon 'keyup'
 // Uses same functionality as 'submit' event above
 form.addEventListener('keyup', (e) => {
     const ccMethodSelected = payment.value === 'credit-card';
@@ -232,15 +241,12 @@ form.addEventListener('keyup', (e) => {
     checkValidation(isValidName(), nameInput, 'label', 'name');
     checkValidation(isValidEmail(), emailInput, 'label', 'email');
     if (ccMethodSelected) {
-
-        // If invalid credit card values, then prevent submission
         if (!isValidCC() ||
             !isValidZip() ||
             !isValidCVV() 
         ){
             e.preventDefault();
         }
-
         checkValidation(isValidCC(), ccInput, 'label', 'cc');
         checkValidation(isValidZip(), zipInput, 'label', 'zip');
         checkValidation(isValidCVV(), cvvInput, 'label', 'cvv');
