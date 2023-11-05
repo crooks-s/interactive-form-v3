@@ -1,29 +1,35 @@
-    // General DOM variables
+    // Global DOM variables
 const form = document.querySelector('form');
 const otherJobInput = document.querySelector('#other-job-role');
-const jobSelect = document.querySelector("#title");
 const colorMenu = document.querySelector("#color");
 const designMenu = document.querySelector('#design');
-const totalP = document.querySelector("#activities-cost");
-const activitiesField = document.querySelector('#activities');
 const payment = document.querySelector('#payment');
-const ccDiv = document.querySelector('#credit-card');
 const paypalDiv = document.querySelector('#paypal');
 const bitcoinDiv = document.querySelector('#bitcoin');
 const allCheckboxes = document.querySelectorAll("input[type='checkbox']");
-    // DOM Variables for form validation
-const emailInput = document.querySelector('#email');
-const ccInput = document.querySelector('#cc-num');
-const zipInput = document.querySelector('#zip');
-const cvvInput = document.querySelector('#cvv');
 const activities = document.querySelector('#activities');
 
-    // Validation functions - returns boolean
+// Validate if user registered for at least one activity
 const isRegistered = () => document.querySelectorAll('.checked').length >= 1;
+
+// Validate name
+const nameInput = document.querySelector('input[type=text]');
 const isValidName = () => /^(\s)*?[A-Za-z-]+(\s)*?[A-Za-z-]*(\s)*?$/.test(nameInput.value);
+
+// Validate email
+const emailInput = document.querySelector('#email');
 const isValidEmail = () => /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput.value);
+
+// Validate credit card
+const ccInput = document.querySelector('#cc-num');
 const isValidCC = () => /^\d{13,16}$/.test(ccInput.value);
+
+// Validate zip code
+const zipInput = document.querySelector('#zip');
 const isValidZip = () => /^\d{5}$/.test(zipInput.value);
+
+// Validate CVV
+const cvvInput = document.querySelector('#cvv');
 const isValidCVV = () => /^\d{3}$/.test(cvvInput.value);
 
 
@@ -57,7 +63,6 @@ const checkValidation = (valid, element, ancestor, field) => {
 
 
 // On page load, focus on first input field
-const nameInput = document.querySelector('input[type=text]');
 nameInput.focus();
 
 // Hide 'Other' job text input until needed
@@ -71,6 +76,7 @@ payment.value = 'credit-card';
 paypalDiv.style.display = 'none';
 bitcoinDiv.style.display = 'none';
 
+const jobSelect = document.querySelector("#title");
 // If 'Other' job selected, then show relevant text input
 jobSelect.addEventListener('change', (e) => {
     if (e.target.value === 'other'){
@@ -113,21 +119,21 @@ designMenu.addEventListener('change', (e) => {
 // Updates Total shown on page as user selects different activities
 // Other functionality explained below
 let totalCost = 0;
+const activitiesField = document.querySelector('#activities');
 activitiesField.addEventListener('change', (e) => {
 
     // If previously 'checked', then ...
     if (e.target.className === 'checked'){
 
         // ... reverse changes on checkboxes to allow re-selection
-        for (let i=0; i<allCheckboxes.length; i++) {
+        for (const checkbox of allCheckboxes) {
             const selectedBox = document.querySelectorAll('.checked');
-            for (let j=0; j<selectedBox.length; j++) {
-                if (allCheckboxes[i].getAttribute('data-day-and-time') === 
-                    selectedBox[j].getAttribute('data-day-and-time') &&
-                    allCheckboxes[i] !== selectedBox[j]
-                ){
-                    allCheckboxes[i].disabled = false;
-                } 
+            for (const selected of selectedBox) {
+                if ( checkbox.getAttribute('data-day-and-time') === selected.getAttribute('data-day-and-time') &&
+                (checkbox !== selected)
+                ) {
+                    checkbox.disabled = false;
+                }
             }
         }
 
@@ -147,15 +153,14 @@ activitiesField.addEventListener('change', (e) => {
     document.querySelector('#activities-cost').textContent = text;
 
     // Disable checkboxes with conflicting day/time of selected checkbox
-    for (let i=0; i<allCheckboxes.length; i++) {
+    for (const checkbox of allCheckboxes) {
         const selectedBox = document.querySelectorAll('.checked');
-        for (let j=0; j<selectedBox.length; j++) {
-            if (allCheckboxes[i].getAttribute('data-day-and-time') === 
-                selectedBox[j].getAttribute('data-day-and-time') &&
-                allCheckboxes[i] !== selectedBox[j]
-            ){
-                allCheckboxes[i].disabled = true;
-            } 
+        for (const selected of selectedBox) {
+            if ( checkbox.getAttribute('data-day-and-time') === selected.getAttribute('data-day-and-time') &&
+            (checkbox !== selected)
+            ) {
+                checkbox.disabled = true;
+            }
         }
     }
 
@@ -166,6 +171,7 @@ activitiesField.addEventListener('change', (e) => {
 
 // Handles payment info when user 'changes' payment method
 payment.addEventListener('change', () => {
+    const ccDiv = document.querySelector('#credit-card');
 
     // Update relevant info for selected payment method
     if (payment.value === 'credit-card'){
