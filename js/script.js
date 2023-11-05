@@ -119,15 +119,17 @@ activitiesField.addEventListener('change', (e) => {
     if (e.target.className === 'checked'){
 
         // ... reverse changes on checkboxes to allow re-selection
-        for (let i=0; i<allCheckboxes.length; i++) {
+        for (const checkbox of allCheckboxes) {
+
             const selectedBox = document.querySelectorAll('.checked');
-            for (let j=0; j<selectedBox.length; j++) {
-                if (allCheckboxes[i].getAttribute('data-day-and-time') === 
-                    selectedBox[j].getAttribute('data-day-and-time') &&
-                    allCheckboxes[i] !== selectedBox[j]
-                ){
-                    allCheckboxes[i].disabled = false;
-                } 
+
+            for (const selected of selectedBox) {
+                if (
+                    (checkbox.getAttribute('data-day-and-time') === selectedBox.getAttribute('data-day-and-time'))
+                    && (checkbox !== selected)
+                ) {
+                    checkbox.disbaled = false;
+                }
             }
         }
 
