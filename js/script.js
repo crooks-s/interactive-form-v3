@@ -1,4 +1,4 @@
-    // Global DOM variables
+// Global DOM variables
 const form = document.querySelector('form');
 const otherJobInput = document.querySelector('#other-job-role');
 const colorMenu = document.querySelector("#color");
@@ -35,26 +35,24 @@ const isValidCVV = () => /^\d{3}$/.test(cvvInput.value);
 
 /**
  * Uses validation functions above to modify selected HTML element
- * @param {function} validation - validation function
+ * @param {function} valid - validation function
  * @param {DOM element} element - HTML element to modify
  * @param {string} ancestor - parent/ancestor to target
  * @param {string} field - hint element to be shown/hidden
  */
-
 const checkValidation = (valid, element, ancestor, field) => {
     if(!valid){
         element.closest(ancestor).classList.add('not-valid');
         element.closest(ancestor).classList.remove('valid');
 
         // If hint element is span, style 'inline'; 
-        // else style 'block' due to hint in checkbox fieldset being a paragraph element
         if (document.querySelector(`#${field}-hint`).tagName === 'SPAN'){
             document.querySelector(`#${field}-hint`).style.display = 'inline';
+        // else style 'block' due to hint in checkbox fieldset being a paragraph element
         } else {
             document.querySelector(`#${field}-hint`).style.display = 'block';
         }
-
-    } else {
+    } else { // is valid
         element.closest(ancestor).classList.remove('not-valid');
         element.closest(ancestor).classList.add('valid');
         document.querySelector(`#${field}-hint`).style.display = 'none';
@@ -117,7 +115,6 @@ designMenu.addEventListener('change', (e) => {
 
 // Handles changes needed upon checkbox selections
 // Updates Total shown on page as user selects different activities
-// Other functionality explained below
 let totalCost = 0;
 const activitiesField = document.querySelector('#activities');
 activitiesField.addEventListener('change', (e) => {
@@ -190,8 +187,6 @@ payment.addEventListener('change', () => {
     };
 })
 
-
-
 // Form Validation on Submit
 form.addEventListener('submit', (e) => {
     const ccMethodSelected = payment.value === 'credit-card';
@@ -237,7 +232,6 @@ form.addEventListener('submit', (e) => {
 })
 
 // Form Validation, real-time errors for user upon 'keyup'
-// Uses same functionality as 'submit' event above
 form.addEventListener('keyup', (e) => {
     const ccMethodSelected = payment.value === 'credit-card';
 
