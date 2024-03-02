@@ -17,7 +17,7 @@ The web form validation errors display for every field when the user starts typi
 
 ## Running the Project
 Clone the project, and simply open ```index.html```
-<br /> Otherwise, I have a live version [here](https://crooks-s.github.io/a_random_quote_generator-v1/).
+<br /> Otherwise, I have a live version [here](https://crooks-s.github.io/interactive-form-v3/).
 
 ## Author
 Sean Crooks
